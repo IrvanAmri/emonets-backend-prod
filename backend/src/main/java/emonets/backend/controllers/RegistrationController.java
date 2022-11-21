@@ -36,7 +36,6 @@ import emonets.backend.dto.RegisterData;
 import emonets.backend.dto.ResponseData;
 import emonets.backend.models.AppUser;
 import emonets.backend.services.AppUserService;
-import emonets.backend.services.ConfirmationTokenService;
 import emonets.backend.services.RegistrationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +49,6 @@ public class RegistrationController {
     
     private final RegistrationService registrationService;
     private final AppUserService appUserService;
-    private final ConfirmationTokenService confirmationTokenService;
 
     @PostMapping("/register")
     public ResponseEntity<ResponseData<?>> register(@Valid @RequestBody RegisterData registerData, Errors errors){
@@ -169,8 +167,8 @@ public class RegistrationController {
     // }
 
     @GetMapping("/test")
-    public AppUser test(@RequestParam("token") String token){
-        return confirmationTokenService.getAppUserByToken(token);
+    public String test(){
+        return "Hello world";
     }
 
 }
