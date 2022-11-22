@@ -46,7 +46,7 @@ public class RegistrationService {
             String token = registerTokenData.getToken();
 
             //buat link/url menuju endpoint confirm
-            String url = "http://localhost:8080/api/confirm?token="+token;
+            String url = "https://emonet-backend2.azurewebsites.net/api/confirm?token="+token;
 
             //send email yang berisi link aktivasi
             try {
