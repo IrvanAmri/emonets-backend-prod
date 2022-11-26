@@ -21,9 +21,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import emonets.backend.dto.ResponseData;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter{
 
     @Override
@@ -37,11 +35,9 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
         }
         else{
             String authorizationHeader = request.getHeader(org.springframework.http.HttpHeaders.AUTHORIZATION);
-            log.info("headerAuth "+authorizationHeader);
             
             if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
                 try {
-                    log.info("jalur1");
                     String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
@@ -56,9 +52,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
                 } catch (Exception e) {
-                    log.info("jalur2");
                     response.setHeader("error", e.getMessage());
-                    log.info(e.getMessage());
                     response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());
                     // mengenkapsulasi response menggunakan ResponseData
                     ResponseData<?> res = new ResponseData<>();
