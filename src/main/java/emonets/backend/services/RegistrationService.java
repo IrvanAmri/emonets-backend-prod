@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import emonets.backend.bean.IntegrationUrl;
 import emonets.backend.dto.GantiPasswordData;
 import emonets.backend.dto.RegisterData;
 import emonets.backend.dto.RegisterTokenData;
@@ -24,6 +25,7 @@ public class RegistrationService {
     private final AppUserService appUserService;
     private final EmailSender emailSender;
     private final ConfirmationTokenService confirmationTokenService;
+    private final IntegrationUrl integrationUrl;
 
     public ResponseData<?> register(RegisterData registerData){
         ResponseData<?> responseData = new ResponseData<>();
@@ -46,7 +48,7 @@ public class RegistrationService {
             String token = registerTokenData.getToken();
 
             //buat link/url menuju endpoint confirm
-            String url = "https://emonet-backend2.azurewebsites.net/api/confirm?token="+token;
+            String url = integrationUrl.getBackend()+"/api/confirm?token="+token;
 
             //send email yang berisi link aktivasi
             try {
@@ -82,7 +84,7 @@ public class RegistrationService {
             String token = registerTokenData.getToken();
 
             //concat url + token
-            String url = "http://localhost:8080/api/confirmgantipassword?token="+token;
+            String url = integrationUrl.getBackend()+"/api/confirmgantipassword?token="+token;
 
             //send email yang berisi link aktivasi
             emailSender.send(
@@ -127,7 +129,7 @@ public class RegistrationService {
         );
         
         //selesai
-        return "http://localhost:3000/login";
+        return integrationUrl.getFrontend()+"/login";
     }
 
     public ResponseData<String> confirmGantiPasswordToken(String token){

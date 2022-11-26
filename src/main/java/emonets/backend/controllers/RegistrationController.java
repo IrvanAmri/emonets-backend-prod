@@ -38,13 +38,11 @@ import emonets.backend.models.AppUser;
 import emonets.backend.services.AppUserService;
 import emonets.backend.services.RegistrationService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
 @CrossOrigin
-@Slf4j
 public class RegistrationController {
     
     private final RegistrationService registrationService;
@@ -53,7 +51,6 @@ public class RegistrationController {
     @PostMapping("/register")
     public ResponseEntity<ResponseData<?>> register(@Valid @RequestBody RegisterData registerData, Errors errors){
         ResponseData<?> responseData = new ResponseData<>();
-
         //cek error validasi
         if(errors.hasErrors()){
             //mendapatkan semua error
@@ -85,7 +82,6 @@ public class RegistrationController {
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws StreamWriteException, DatabindException, IOException{
         String authorizationHeader = request.getHeader(org.springframework.http.HttpHeaders.AUTHORIZATION);
-        log.info("refresh token path: "+authorizationHeader);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
             try {
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
@@ -111,7 +107,6 @@ public class RegistrationController {
                 res.setStatus(true);
                 res.getMessages().add("refresh token berhasil");
                 res.setPayload(token);
-                log.info("token "+res.getPayload().getAccess_token());
                 response.setContentType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), res);
 

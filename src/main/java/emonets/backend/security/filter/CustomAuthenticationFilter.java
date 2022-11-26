@@ -25,10 +25,8 @@ import emonets.backend.dto.JsonWebToken;
 import emonets.backend.dto.ResponseData;
 import emonets.backend.models.AppUser;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
-@Slf4j
 @CrossOrigin
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
     private final AuthenticationManager authenticationManager;
@@ -45,7 +43,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException failed) throws IOException, ServletException {
 
-        log.info("unsuccessfull authentication");
         ResponseData<?> res = new ResponseData<>();
         res.setStatus(false);
         res.getMessages().add("email atau password salah");
@@ -61,7 +58,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authentication) throws IOException, ServletException {
-        log.info("successfull authentication");
         AppUser user = (AppUser)authentication.getPrincipal();
         //membuat token
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
